@@ -1,0 +1,811 @@
+/* ==========================================================================
+   MNC Interview Prep Portal - Custom CSS Style Sheet
+   Premium Dark-Theme Glassmorphism Design System
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Color Palettes - HSL Custom Design System */
+  --bg-primary: hsl(222, 47%, 8%);
+  --bg-secondary: hsl(222, 47%, 12%);
+  --bg-card: hsla(222, 47%, 16%, 0.7);
+  --bg-card-hover: hsla(222, 47%, 20%, 0.8);
+  
+  --text-primary: hsl(210, 40%, 98%);
+  --text-secondary: hsl(215, 20%, 75%);
+  --text-muted: hsl(215, 16%, 50%);
+  
+  --accent-cyan: hsl(190, 90%, 50%);
+  --accent-violet: hsl(263, 90%, 65%);
+  --accent-emerald: hsl(142, 70%, 50%);
+  --accent-rose: hsl(350, 89%, 60%);
+  --accent-amber: hsl(45, 93%, 47%);
+
+  --border-color: hsla(217, 30%, 60%, 0.12);
+  --border-hover: hsla(190, 90%, 50%, 0.3);
+
+  /* Gradients */
+  --grad-cyan-violet: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%);
+  --grad-card: linear-gradient(180deg, hsla(222, 47%, 16%, 0.4) 0%, hsla(222, 47%, 10%, 0.6) 100%);
+  --grad-glow: radial-gradient(circle, hsla(190, 90%, 50%, 0.15) 0%, transparent 70%);
+
+  /* Typography */
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Shadows & Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-round: 50%;
+  
+  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 20px hsla(190, 90%, 50%, 0.25);
+  
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Dimensions */
+  --sidebar-width: 260px;
+}
+
+/* ==========================================================================
+   Base & Reset Styles
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+a:hover {
+  filter: brightness(1.2);
+}
+
+input, select, textarea {
+  font-family: var(--font-sans);
+  background-color: hsla(222, 47%, 8%, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: var(--transition-fast);
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px hsla(190, 90%, 50%, 0.2);
+}
+
+/* ==========================================================================
+   Typography & Headers
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.text-gradient {
+  background: var(--grad-cyan-violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   Layout & Scaffolding
+   ========================================================================== */
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  margin-left: var(--sidebar-width);
+  transition: var(--transition-normal);
+  max-width: 1400px;
+  width: calc(100% - var(--sidebar-width));
+}
+
+/* Sidebar navigation */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
+
+.sidebar-logo span {
+  font-size: 1.8rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+  background-color: var(--bg-card);
+  color: var(--accent-cyan);
+}
+
+.sidebar-link.active {
+  border-left: 3px solid var(--accent-cyan);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ==========================================================================
+   Interactive Components (Cards, Buttons)
+   ========================================================================== */
+
+.glass-card {
+  background: var(--bg-card);
+  background-image: var(--grad-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: var(--transition-normal);
+}
+
+.glass-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), 0 0 20px hsla(190, 90%, 50%, 0.1);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--grad-cyan-violet);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover {
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+.btn-secondary:hover {
+  background-color: hsla(0, 0%, 100%, 0.05);
+  border-color: var(--text-secondary);
+}
+
+.btn-success {
+  background-color: var(--accent-emerald);
+  color: var(--bg-primary);
+}
+.btn-success:hover {
+  filter: brightness(1.1);
+}
+
+.btn-danger {
+  background-color: var(--accent-rose);
+  color: var(--text-primary);
+}
+.btn-danger:hover {
+  filter: brightness(1.1);
+}
+
+/* Badge tags */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-easy { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+.badge-medium { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+.badge-hard { background-color: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
+
+/* ==========================================================================
+   Dashboard Widgets & Navigation Headers
+   ========================================================================== */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.user-profile-widget {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--bg-secondary);
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--grad-cyan-violet);
+  border-radius: var(--radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  background-color: hsla(190, 90%, 50%, 0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--accent-cyan);
+}
+
+.stat-info .stat-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.stat-info .stat-lbl {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   Prep Dashboard Grid
+   ========================================================================== */
+
+.prep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.prep-card {
+  display: flex;
+  flex-direction: column;
+  height: 280px;
+}
+
+.prep-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.prep-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.prep-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: auto;
+}
+
+/* ==========================================================================
+   Practice Area UI (MCQs & Aptitude)
+   ========================================================================== */
+
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.question-box {
+  margin-bottom: 30px;
+}
+
+.question-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+.option-btn {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.option-btn:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--accent-cyan);
+}
+
+.option-btn.selected {
+  background-color: hsla(190, 90%, 50%, 0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.option-btn.correct {
+  background-color: rgba(16, 185, 129, 0.15);
+  border-color: var(--accent-emerald);
+  color: var(--accent-emerald);
+}
+
+.option-btn.wrong {
+  background-color: rgba(244, 63, 94, 0.15);
+  border-color: var(--accent-rose);
+  color: var(--accent-rose);
+}
+
+.explanation-box {
+  background-color: hsla(45, 93%, 47%, 0.08);
+  border-left: 4px solid var(--accent-amber);
+  padding: 20px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+   Coding Sandbox Layout (Split Pane)
+   ========================================================================== */
+
+.coding-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px;
+  height: calc(100vh - 160px);
+}
+
+.challenge-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.code-editor-wrapper {
+  flex: 1;
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: #0b0f19;
+}
+
+.code-textarea {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: #f8f8f2;
+  padding: 20px;
+  resize: none;
+  line-height: 1.5;
+  outline: none;
+  box-shadow: none;
+}
+
+.coding-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.console-box {
+  background-color: #050811;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  font-family: var(--font-mono);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.console-box h4 {
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Mock Test Engine
+   ========================================================================== */
+
+.timer-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent-rose);
+  background-color: rgba(244, 63, 94, 0.1);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+}
+
+.test-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 30px;
+}
+
+.question-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.nav-num-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.nav-num-btn:hover {
+  border-color: var(--accent-cyan);
+}
+
+.nav-num-btn.active {
+  background-color: var(--accent-cyan);
+  color: var(--bg-primary);
+  border-color: var(--accent-cyan);
+}
+
+.nav-num-btn.answered {
+  background-color: var(--accent-emerald);
+  color: var(--bg-primary);
+  border-color: var(--accent-emerald);
+}
+
+/* ==========================================================================
+   HR Interview Platforms
+   ========================================================================== */
+
+.hr-feedback-card {
+  border-left: 4px solid var(--accent-cyan);
+  margin-top: 30px;
+  background-color: rgba(6, 182, 212, 0.05);
+}
+
+/* ==========================================================================
+   Admin Panel UI
+   ========================================================================== */
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.admin-tab-btn {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  transition: var(--transition-fast);
+}
+
+.admin-tab-btn.active, .admin-tab-btn:hover {
+  color: var(--accent-cyan);
+  border-bottom: 3px solid var(--accent-cyan);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table th {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   Landing & Auth Modal Pages
+   ========================================================================== */
+
+.landing-hero {
+  max-width: 800px;
+  margin: 100px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.landing-hero h1 {
+  font-size: 4rem;
+  font-weight: 800;
+}
+
+.landing-hero p {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.auth-container {
+  max-width: 480px;
+  margin: 60px auto;
+}
+
+.auth-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 30px;
+}
+
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.auth-tab.active {
+  color: var(--accent-cyan);
+  border-bottom: 3px solid var(--accent-cyan);
+}
+
+/* ==========================================================================
+   Utility Classes & Toast Alert System
+   ========================================================================== */
+
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  padding: 16px 24px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  animation: slideIn 0.3s ease-out forwards;
+}
+.toast-success { background-color: var(--accent-emerald); color: var(--bg-primary); }
+.toast-error { background-color: var(--accent-rose); }
+.toast-info { background-color: var(--accent-cyan); color: var(--bg-primary); }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.flex-row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mt-4 { margin-top: 1.5rem; }
+.mr-2 { margin-right: 0.5rem; }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 80px;
+    padding: 24px 12px;
+  }
+  .sidebar-logo span { display: none; }
+  .sidebar-link span { display: none; }
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 20px;
+  }
+  .coding-workspace {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .sidebar-menu {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}

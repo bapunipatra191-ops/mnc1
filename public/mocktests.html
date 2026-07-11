@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Tests - MNC Prep</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder (Injected by JS api.js) -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      
+      <!-- Selection of available exams (Shown initially) -->
+      <div id="mock-selection-view">
+        <div class="dashboard-header">
+          <div>
+            <h1 style="font-size: 2.2rem; font-weight: 800;">Simulated Mock Exams</h1>
+            <p style="color: var(--text-secondary); margin-top: 5px;">Take full-length tests matching exact MNC placement questions weighting.</p>
+          </div>
+        </div>
+
+        <div id="mocktests-list-area" style="max-width: 800px; margin: 0 auto;">
+          <div style="text-align: center; padding: 40px; color: var(--text-secondary);">Loading mock tests...</div>
+        </div>
+      </div>
+
+      <!-- Exam active workspace (Hidden initially) -->
+      <div id="mock-exam-workspace" style="display: none; grid-template-columns: 3fr 1fr; gap: 30px;">
+        
+        <!-- Left Column: Question container -->
+        <div>
+          <!-- Header with timer -->
+          <div class="flex-row-between" style="background-color: var(--bg-secondary); padding: 15px 25px; border-radius: var(--radius-md); border:1px solid var(--border-color); margin-bottom: 25px;">
+            <h3 id="test-title-display" style="font-size: 1.2rem; font-weight: 700;">Mock Exam Assessment</h3>
+            <div class="timer-widget">
+              <span>⏱️</span> <strong id="test-timer">00:00</strong>
+            </div>
+          </div>
+
+          <!-- Dynamic question workspace -->
+          <div id="test-question-pane">
+            <div style="text-align: center; padding: 40px;">Initializing question workspace...</div>
+          </div>
+        </div>
+
+        <!-- Right Column: Navigation and Submission -->
+        <div>
+          <div class="glass-card" style="padding: 20px;">
+            <h4 style="font-size: 0.95rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 15px;">
+              Question Navigator
+            </h4>
+            
+            <div id="nav-grid" class="question-nav-grid">
+              <!-- Dynamically populated buttons -->
+            </div>
+
+            <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+              <button id="submit-test-btn" class="btn btn-primary" style="width: 100%;">
+                Submit Exam
+              </button>
+              <button onclick="if(confirm('Are you sure you want to quit? Answers will not be saved.')) { window.location.reload() }" class="btn btn-secondary" style="width: 100%;">
+                Quit Test
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Score results summary card (Hidden initially) -->
+      <div id="mock-results-view" style="display: none;">
+        <!-- Dynamically rendered by mocktest.js -->
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/mocktest.js"></script>
+</body>
+</html>

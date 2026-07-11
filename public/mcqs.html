@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical MCQs - MNC Prep</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder (Injected by JS api.js) -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      
+      <!-- Tech MCQs Header -->
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-size: 2.2rem; font-weight: 800;">Technical MCQs practice</h1>
+          <p style="color: var(--text-secondary); margin-top: 5px;">Drill down into coding structures, system calls and database configurations.</p>
+        </div>
+        
+        <!-- Filter dropdown -->
+        <div>
+          <select id="subject-selector" style="font-weight: 600; cursor: pointer;">
+            <option value="java">Java Programming</option>
+            <option value="cpp">C++ Programming</option>
+            <option value="python">Python Programming</option>
+            <option value="webdev">HTML/CSS/Web Dev</option>
+            <option value="os">Operating Systems</option>
+            <option value="dbms">DBMS & SQL queries</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- MCQ Container -->
+      <div class="quiz-container">
+        <div id="question-area">
+          <div style="text-align: center; padding: 40px; color: var(--text-secondary);">Loading questions...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/prep.js"></script>
+</body>
+</html>

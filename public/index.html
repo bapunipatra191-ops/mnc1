@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prepare for top MNC placement interviews. Practice Aptitude tests, solve Coding challenges, review Technical MCQs, get HR interview AI suggestions, and mock tests.">
+  <title>MNC Interview Preparation Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Landing page header wrapper -->
+  <div class="landing-hero">
+    <h1>Prepare For Your <br><span class="text-gradient">Dream MNC Career</span></h1>
+    <p>Unlock structured aptitude drills, code compilation workspaces, subject-specific MCQs, STAR method HR feedback systems, and full-length simulated mock exams.</p>
+  </div>
+
+  <!-- Authenticated form card container -->
+  <div class="auth-container glass-card">
+    <div class="auth-tabs">
+      <div id="tab-login" class="auth-tab active">Log In</div>
+      <div id="tab-register" class="auth-tab">Sign Up</div>
+    </div>
+
+    <!-- Login Form -->
+    <form id="form-login" style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="form-group">
+        <label for="login-email">Email Address</label>
+        <input type="email" id="login-email" required placeholder="name@email.com">
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary mt-4">Access Dashboard</button>
+    </form>
+
+    <!-- Register Form -->
+    <form id="form-register" style="display: none; flex-direction: column; gap: 20px;">
+      <div class="form-group">
+        <label for="register-username">Full Name</label>
+        <input type="text" id="register-username" required placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label for="register-email">Email Address</label>
+        <input type="email" id="register-email" required placeholder="john@email.com">
+      </div>
+      <div class="form-group">
+        <label for="register-password">Password</label>
+        <input type="password" id="register-password" required placeholder="Minimum 6 characters">
+      </div>
+      <div class="form-group">
+        <label for="register-confirm-password">Confirm Password</label>
+        <input type="password" id="register-confirm-password" required placeholder="Repeat password">
+      </div>
+      <button type="submit" class="btn btn-primary mt-4">Create Account</button>
+    </form>
+  </div>
+
+  <!-- Client side handlers -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
