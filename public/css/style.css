@@ -761,6 +761,60 @@ h1, h2, h3, h4, h5, h6 {
 .mt-4 { margin-top: 1.5rem; }
 .mr-2 { margin-right: 0.5rem; }
 
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.test-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 30px;
+}
+
+.admin-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.form-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-two-one-col-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-main-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .admin-two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .form-two-one-col-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
 /* ==========================================================================
    Responsive — Tablet (≤1024px): Compact sidebar with icons + labels
    ========================================================================== */

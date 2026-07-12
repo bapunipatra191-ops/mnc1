@@ -87,13 +87,13 @@
 
       <!-- VIEW 2: MCQ Management -->
       <div id="admin-view-mcq" style="display: none;">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: flex-start;">
+        <div class="admin-two-col-grid">
           
           <!-- Add MCQ form -->
           <div class="glass-card">
             <h3 style="font-size:1.2rem; margin-bottom: 20px;">Create New MCQ Question</h3>
             <form id="admin-add-mcq-form" style="display:flex; flex-direction:column; gap:16px;">
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+              <div class="form-two-col-grid">
                 <div class="form-group">
                   <label for="mcq-category">Category</label>
                   <select id="mcq-category" required>
@@ -122,7 +122,7 @@
                 <textarea id="mcq-question" rows="3" required placeholder="Type question description..."></textarea>
               </div>
 
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+              <div class="form-two-col-grid">
                 <div class="form-group">
                   <label for="mcq-opt-a">Option A</label>
                   <input type="text" id="mcq-opt-a" required placeholder="Option A text">
@@ -187,14 +187,14 @@
 
       <!-- VIEW 3: Coding Challenges Management -->
       <div id="admin-view-coding" style="display: none;">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: flex-start;">
+        <div class="admin-two-col-grid">
           
           <!-- Add Challenge Form -->
           <div class="glass-card">
             <h3 style="font-size:1.2rem; margin-bottom: 20px;">Create Coding Challenge</h3>
             <form id="admin-add-coding-form" style="display:flex; flex-direction:column; gap:16px;">
               
-              <div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px;">
+              <div class="form-two-one-col-grid">
                 <div class="form-group">
                   <label for="coding-title">Problem Title</label>
                   <input type="text" id="coding-title" required placeholder="e.g. FizzBuzz">
@@ -214,7 +214,7 @@
                 <textarea id="coding-desc" rows="4" required placeholder="Describe task, parameters and return values..."></textarea>
               </div>
 
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+              <div class="form-two-col-grid">
                 <div class="form-group">
                   <label for="coding-input-fmt">Input Format</label>
                   <input type="text" id="coding-input-fmt" placeholder="e.g. Single line integer">
@@ -230,7 +230,7 @@
                 <input type="text" id="coding-constraints" placeholder="e.g. 1 <= N <= 10^5">
               </div>
 
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+              <div class="form-two-col-grid">
                 <div class="form-group">
                   <label for="coding-sample-in">Sample Input</label>
                   <textarea id="coding-sample-in" rows="2" placeholder="Sample input text"></textarea>
