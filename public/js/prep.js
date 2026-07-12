@@ -123,9 +123,15 @@ function renderCurrentQuestion(category, subject) {
         <button onclick="navigateQuestion(-1)" class="btn btn-secondary" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
           ⬅️ Previous
         </button>
-        <button onclick="navigateQuestion(1)" class="btn btn-primary" ${currentQuestionIndex === activeQuestions.length - 1 ? 'disabled' : ''}>
-          Next ➡️
-        </button>
+        ${currentQuestionIndex === activeQuestions.length - 1 ? `
+          <button onclick="submitPracticeTest()" class="btn btn-primary" style="background: var(--grad-cyan-violet); box-shadow: var(--shadow-glow);">
+            Submit Test 🏁
+          </button>
+        ` : `
+          <button onclick="navigateQuestion(1)" class="btn btn-primary">
+            Next ➡️
+          </button>
+        `}
       </div>
     </div>
   `;
@@ -445,3 +451,83 @@ function renderCompanyDetails(compId) {
     </div>
   `;
 }
+
+function submitPracticeTest() {
+  let correctCount = 0;
+  let answeredCount = 0;
+  
+  activeQuestions.forEach((q, idx) => {
+    const userAns = userAnswers[idx];
+    if (userAns !== undefined) {
+      answeredCount++;
+      if (userAns === q.correct_option) {
+        correctCount++;
+      }
+    }
+  });
+
+  const total = activeQuestions.length;
+  const unanswered = total - answeredCount;
+
+  if (unanswered > 0) {
+    if (!confirm(`You have ${unanswered} unanswered question(s). Do you still want to submit?`)) {
+      return;
+    }
+  }
+
+  const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+  
+  const container = document.getElementById('question-area');
+  if (!container) return;
+
+  let remark = 'Excellent Work!';
+  let remarkColor = 'var(--accent-emerald)';
+
+  if (pct < 50) {
+    remark = 'Needs Improvement. Keep Practicing!';
+    remarkColor = 'var(--accent-rose)';
+  } else if (pct < 75) {
+    remark = 'Good Job! Review key concepts to score higher.';
+    remarkColor = 'var(--accent-cyan)';
+  }
+
+  container.innerHTML = `
+    <div class="glass-card" style="max-width: 600px; margin: 40px auto; text-align: center; padding: 40px;">
+      <span style="font-size: 4rem;">🏆</span>
+      <h2 style="font-size: 2rem; margin-top: 15px;">Practice Set Submitted</h2>
+      
+      <div style="font-size: 3rem; font-weight: 800; color:${remarkColor}; margin: 20px 0;">
+        ${correctCount} / ${total}
+        <div style="font-size: 1.1rem; color: var(--text-secondary); font-weight: 500; margin-top: 5px;">
+          Accuracy: ${pct}%
+        </div>
+      </div>
+
+      <h3 style="color:${remarkColor}; margin-bottom: 25px;">${remark}</h3>
+
+      <div style="background-color:var(--bg-secondary); padding: 20px; border-radius: var(--radius-md); text-align:left; margin-bottom: 30px; border: 1px solid var(--border-color);">
+        <p style="margin-bottom: 8px;"><strong>Answered:</strong> ${answeredCount} / ${total}</p>
+        <p style="margin-bottom: 8px;"><strong>Correct Answers:</strong> ${correctCount}</p>
+        <p><strong>Incorrect Answers:</strong> ${answeredCount - correctCount}</p>
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:15px;">
+        <button onclick="restartPracticeSet()" class="btn btn-primary">Try Again</button>
+        <a href="dashboard.html" class="btn btn-secondary">Go to Dashboard</a>
+      </div>
+    </div>
+  `;
+}
+
+function restartPracticeSet() {
+  userAnswers = {};
+  currentQuestionIndex = 0;
+  const path = window.location.pathname.split('/').pop();
+  const category = path === 'aptitude.html' ? 'aptitude' : 'technical';
+  const subject = document.getElementById('subject-selector').value;
+  renderCurrentQuestion(category, subject);
+}
+
+window.submitPracticeTest = submitPracticeTest;
+window.restartPracticeSet = restartPracticeSet;
+
