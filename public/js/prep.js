@@ -98,16 +98,16 @@ function renderCurrentQuestion(category, subject) {
       <div class="question-text">${q.question}</div>
       
       <div class="options-list">
-        <button onclick="selectOption('A', ${hasAnswered})" class="option-btn ${getOptionClass('A', q.correct_option, selectedOpt)}">
+        <button onclick="selectOption('A')" class="option-btn ${getOptionClass('A', q.correct_option, selectedOpt)}">
           <strong>A.</strong> ${q.option_a}
         </button>
-        <button onclick="selectOption('B', ${hasAnswered})" class="option-btn ${getOptionClass('B', q.correct_option, selectedOpt)}">
+        <button onclick="selectOption('B')" class="option-btn ${getOptionClass('B', q.correct_option, selectedOpt)}">
           <strong>B.</strong> ${q.option_b}
         </button>
-        <button onclick="selectOption('C', ${hasAnswered})" class="option-btn ${getOptionClass('C', q.correct_option, selectedOpt)}">
+        <button onclick="selectOption('C')" class="option-btn ${getOptionClass('C', q.correct_option, selectedOpt)}">
           <strong>C.</strong> ${q.option_c}
         </button>
-        <button onclick="selectOption('D', ${hasAnswered})" class="option-btn ${getOptionClass('D', q.correct_option, selectedOpt)}">
+        <button onclick="selectOption('D')" class="option-btn ${getOptionClass('D', q.correct_option, selectedOpt)}">
           <strong>D.</strong> ${q.option_d}
         </button>
       </div>
@@ -139,8 +139,9 @@ function getOptionClass(optionChar, correctChar, selectedOpt) {
   return '';
 }
 
-async function selectOption(optionChar, hasAnswered) {
-  if (hasAnswered) return; // Prevent clicking multiple times
+async function selectOption(optionChar) {
+  // Prevent re-answering an already answered question
+  if (userAnswers[currentQuestionIndex] !== undefined) return;
 
   userAnswers[currentQuestionIndex] = optionChar;
   const q = activeQuestions[currentQuestionIndex];
