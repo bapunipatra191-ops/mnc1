@@ -189,6 +189,16 @@ function executeJsonQuery(sql, params = []) {
     return [data.hr_questions];
   }
 
+  // 11b. SELECT * FROM users (no WHERE - used by admin stats)
+  if (normalizedSql.match(/SELECT \* FROM users$/i)) {
+    return [data.users];
+  }
+
+  // 11c. SELECT * FROM user_progress (no WHERE - used by admin stats)
+  if (normalizedSql.match(/SELECT \* FROM user_progress$/i)) {
+    return [data.user_progress];
+  }
+
   // 12. SELECT * FROM mock_tests WHERE id = ?
   if (normalizedSql.match(/SELECT \* FROM mock_tests WHERE id = \?/i)) {
     const matched = data.mock_tests.filter(t => t.id == params[0]);
