@@ -173,4 +173,58 @@ const injectSidebar = () => {
 // Initialize common items
 document.addEventListener('DOMContentLoaded', () => {
   injectSidebar();
+  initMobileNav();
 });
+
+// Mobile hamburger menu toggle
+function initMobileNav() {
+  const sidebarEl = document.getElementById('sidebar-placeholder');
+  if (!sidebarEl) return;
+
+  // Inject overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+  overlay.id = 'sidebar-overlay';
+  document.body.appendChild(overlay);
+
+  // Inject hamburger button
+  const btn = document.createElement('button');
+  btn.className = 'hamburger-btn';
+  btn.id = 'hamburger-btn';
+  btn.setAttribute('aria-label', 'Toggle navigation');
+  btn.innerHTML = '<span></span><span></span><span></span>';
+  document.body.appendChild(btn);
+
+  function openSidebar() {
+    const sidebar = sidebarEl.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.add('mobile-open');
+    overlay.classList.add('active');
+    btn.classList.add('open');
+  }
+
+  function closeSidebar() {
+    const sidebar = sidebarEl.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('active');
+    btn.classList.remove('open');
+  }
+
+  btn.addEventListener('click', () => {
+    const sidebar = sidebarEl.querySelector('.sidebar');
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
+
+  // Close on overlay click
+  overlay.addEventListener('click', closeSidebar);
+
+  // Close when a nav link is tapped (mobile UX)
+  sidebarEl.addEventListener('click', (e) => {
+    if (e.target.closest('.sidebar-link')) {
+      closeSidebar();
+    }
+  });
+}

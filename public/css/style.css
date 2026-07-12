@@ -761,51 +761,203 @@ h1, h2, h3, h4, h5, h6 {
 .mt-4 { margin-top: 1.5rem; }
 .mr-2 { margin-right: 0.5rem; }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   Responsive — Tablet (≤1024px): Compact sidebar with icons + labels
+   ========================================================================== */
+
 @media (max-width: 1024px) {
   .sidebar {
-    width: 80px;
-    padding: 24px 12px;
+    width: 220px;
+    padding: 20px 14px;
   }
-  .sidebar-logo span { display: none; }
-  .sidebar-link span { display: none; }
   .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-    padding: 20px;
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 24px 20px;
   }
   .coding-workspace {
     grid-template-columns: 1fr;
     height: auto;
   }
+  .test-grid {
+    grid-template-columns: 1fr;
+  }
+  .landing-hero h1 {
+    font-size: 2.8rem;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (≤768px): Hamburger + Slide-in Drawer
+   ========================================================================== */
+
+/* Hamburger button — fixed top-left, only visible on mobile */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 300;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  transition: var(--transition-fast);
+}
+.hamburger-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: var(--transition-fast);
+}
+.hamburger-btn:hover {
+  border-color: var(--accent-cyan);
+}
+/* Animated X when open */
+.hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Dark overlay behind drawer */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 150;
+  backdrop-filter: blur(2px);
+}
+.sidebar-overlay.active {
+  display: block;
 }
 
 @media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
+  /* Show hamburger button */
+  .hamburger-btn {
+    display: flex;
   }
+
+  /* Sidebar becomes a fixed off-canvas drawer */
   .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 270px;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
   }
-  .sidebar-menu {
-    flex-direction: row;
-    justify-content: space-around;
+
+  /* Open state — slides in */
+  .sidebar.mobile-open {
+    transform: translateX(0);
   }
+
+  /* Main content: full width, push down for hamburger */
   .main-content {
     margin-left: 0;
     width: 100%;
-    padding: 20px;
+    padding: 72px 16px 24px 16px;
   }
+
+  /* Stack layout vertically */
+  .app-container {
+    flex-direction: column;
+  }
+
+  /* Stats grid: 2 columns on mobile */
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
+
+  /* Dashboard grid stack */
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* Progress grid stack */
+  .prep-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Test grid stack */
+  .test-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Coding workspace stack */
+  .coding-workspace {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  /* Landing hero responsive */
+  .landing-hero {
+    margin: 60px auto;
+    padding: 0 20px;
+  }
+  .landing-hero h1 {
+    font-size: 2rem;
+  }
+  .landing-hero p {
+    font-size: 1rem;
+  }
+
+  /* Auth card full width */
+  .auth-container {
+    margin: 30px 16px;
+    max-width: 100%;
+  }
+
+  /* Glass cards less padding */
+  .glass-card {
+    padding: 20px;
+  }
+
+  /* Admin tabs scroll horizontal */
+  .admin-tabs {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  /* Toast full width bottom */
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+  .toast {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Extra small phones (≤400px) */
+@media (max-width: 400px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .landing-hero h1 {
+    font-size: 1.6rem;
+  }
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
   }
 }
