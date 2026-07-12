@@ -383,6 +383,9 @@ function executeJsonQuery(sql, params = []) {
 let pool;
 let useFallback = false;
 
+// Promise that resolves once DB initialization is complete
+let dbReady;
+
 async function initDb() {
   if (process.env.DB_HOST) {
     try {
@@ -393,6 +396,7 @@ async function initDb() {
         database: process.env.DB_NAME,
         waitForConnections: true,
         connectionLimit: 10,
+        connectTimeout: 10000,  // 10 second timeout to avoid long hangs
         queueLimit: 0
       });
       // Test connection
@@ -402,6 +406,7 @@ async function initDb() {
     } catch (err) {
       console.warn('MySQL connection configuration failed. Details:', err.message);
       console.log('Switching to JSON-based local database fallback.');
+      pool = null;
       useFallback = true;
     }
   } else {
@@ -410,11 +415,14 @@ async function initDb() {
   }
 }
 
-// Immediately initialize
-initDb();
+// Initialize immediately and store the promise so queries can await it
+dbReady = initDb();
 
 module.exports = {
   query: async (sql, params = []) => {
+    // Wait for DB initialization to fully complete before running any query
+    await dbReady;
+
     if (useFallback) {
       return executeJsonQuery(sql, params);
     }
@@ -422,6 +430,7 @@ module.exports = {
       return await pool.query(sql, params);
     } catch (err) {
       console.error('MySQL query execution error, routing to fallback DB. Error:', err.message);
+      useFallback = true;
       return executeJsonQuery(sql, params);
     }
   },
