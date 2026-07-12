@@ -94,12 +94,37 @@ const DEFAULT_SEED_DATA = {
   mock_tests: [
     { id: 1, title: 'TCS NQT Full Length Mock Test', duration_minutes: 30, questions: '[{"id":1,"type":"aptitude","subject":"quantitative"},{"id":3,"type":"aptitude","subject":"logical"},{"id":5,"type":"aptitude","subject":"verbal"},{"id":7,"type":"technical","subject":"java"},{"id":9,"type":"technical","subject":"cpp"},{"id":12,"type":"technical","subject":"os"},{"id":1,"type":"coding"}]' },
     { id: 2, title: 'Infosys SP Assessment Mock', duration_minutes: 45, questions: '[{"id":2,"type":"aptitude","subject":"quantitative"},{"id":4,"type":"aptitude","subject":"logical"},{"id":6,"type":"aptitude","subject":"verbal"},{"id":10,"type":"technical","subject":"python"},{"id":13,"type":"technical","subject":"dbms"},{"id":11,"type":"technical","subject":"webdev"},{"id":2,"type":"coding"},{"id":3,"type":"coding"}]' }
-  ]
+  ],
+  amo_bus_routes: [
+    { id: 1, name: "AMO Express", number: "101", source: "Central Station", destination: "North Terminal", stops: "Central Station,Midtown,Uptown,North Terminal", timings: "06:00,07:30,09:00,10:30,12:00", fare_adult: 2.50, fare_student: 1.50 },
+    { id: 2, name: "AMO Local", number: "202", source: "East Park", destination: "West Market", stops: "East Park,City Hall,West Market", timings: "06:15,07:45,09:15,10:45,12:15", fare_adult: 1.80, fare_student: 1.00 },
+    { id: 3, name: "Metro Connector", number: "303", source: "Airport T1", destination: "Downtown Hub", stops: "Airport T1,Business Park,Tech Park,Downtown Hub", timings: "05:00,06:00,07:00,08:00,09:00,10:00", fare_adult: 3.50, fare_student: 2.00 }
+  ],
+  amo_bus_alerts: [
+    { id: 1, route_id: 2, message: "Delay due to traffic on Main St", severity: "warning", created_at: new Date().toISOString() },
+    { id: 2, route_id: null, message: "System-wide maintenance scheduled on Sunday 2:00 AM to 4:00 AM", severity: "info", created_at: new Date().toISOString() }
+  ],
+  amo_bus_feedback: [],
+  amo_bus_favorites: []
 };
 
 // Ensure fallback db file exists
 if (!fs.existsSync(FALLBACK_DB_PATH)) {
   fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(DEFAULT_SEED_DATA, null, 2), 'utf8');
+} else {
+  try {
+    const data = JSON.parse(fs.readFileSync(FALLBACK_DB_PATH, 'utf8'));
+    let modified = false;
+    if (!data.amo_bus_routes) { data.amo_bus_routes = DEFAULT_SEED_DATA.amo_bus_routes; modified = true; }
+    if (!data.amo_bus_alerts) { data.amo_bus_alerts = DEFAULT_SEED_DATA.amo_bus_alerts; modified = true; }
+    if (!data.amo_bus_feedback) { data.amo_bus_feedback = []; modified = true; }
+    if (!data.amo_bus_favorites) { data.amo_bus_favorites = []; modified = true; }
+    if (modified) {
+      fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+    }
+  } catch (e) {
+    console.error('Error seeding AMO Bus fallback tables:', e);
+  }
 }
 
 // SQL Query simulation for fallback database
@@ -270,6 +295,83 @@ function executeJsonQuery(sql, params = []) {
     const deletedCount = initialLen - data.coding_challenges.length;
     fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ affectedRows: deletedCount }];
+  }
+
+  // 20. SELECT * FROM amo_bus_routes
+  if (normalizedSql.match(/SELECT \* FROM amo_bus_routes/i)) {
+    return [data.amo_bus_routes || []];
+  }
+
+  // 21. SELECT a.*, r.name as route_name, r.number as route_number FROM amo_bus_alerts a LEFT JOIN amo_bus_routes r ON a.route_id = r.id
+  if (normalizedSql.match(/SELECT a\.\*.*FROM amo_bus_alerts/i)) {
+    const alerts = data.amo_bus_alerts || [];
+    const routes = data.amo_bus_routes || [];
+    const matched = alerts.map(a => {
+      const route = routes.find(r => r.id == a.route_id);
+      return {
+        ...a,
+        route_name: route ? route.name : null,
+        route_number: route ? route.number : null
+      };
+    });
+    return [matched];
+  }
+
+  // 22. INSERT INTO amo_bus_feedback (name, email, message) VALUES (?, ?, ?)
+  if (normalizedSql.match(/INSERT INTO amo_bus_feedback/i)) {
+    if (!data.amo_bus_feedback) data.amo_bus_feedback = [];
+    const newId = data.amo_bus_feedback.length ? Math.max(...data.amo_bus_feedback.map(f => f.id)) + 1 : 1;
+    const newFeed = {
+      id: newId,
+      name: params[0],
+      email: params[1],
+      message: params[2],
+      created_at: new Date().toISOString()
+    };
+    data.amo_bus_feedback.push(newFeed);
+    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+    return [{ insertId: newId }];
+  }
+
+  // 23. SELECT r.* FROM amo_bus_favorites f JOIN amo_bus_routes r ON f.route_id = r.id WHERE f.user_id = ?
+  if (normalizedSql.match(/SELECT r\.\* FROM amo_bus_favorites/i)) {
+    const favorites = data.amo_bus_favorites || [];
+    const routes = data.amo_bus_routes || [];
+    const favRouteIds = favorites.filter(f => f.user_id == params[0]).map(f => f.route_id);
+    const matched = routes.filter(r => favRouteIds.includes(r.id));
+    return [matched];
+  }
+
+  // 24. SELECT * FROM amo_bus_favorites WHERE user_id = ? AND route_id = ?
+  if (normalizedSql.match(/SELECT \* FROM amo_bus_favorites WHERE user_id = \? AND route_id = \?/i)) {
+    const favorites = data.amo_bus_favorites || [];
+    const matched = favorites.filter(f => f.user_id == params[0] && f.route_id == params[1]);
+    return [matched];
+  }
+
+  // 25. DELETE FROM amo_bus_favorites WHERE user_id = ? AND route_id = ?
+  if (normalizedSql.match(/DELETE FROM amo_bus_favorites WHERE user_id = \? AND route_id = \?/i)) {
+    if (!data.amo_bus_favorites) data.amo_bus_favorites = [];
+    const initialLen = data.amo_bus_favorites.length;
+    data.amo_bus_favorites = data.amo_bus_favorites.filter(f => !(f.user_id == params[0] && f.route_id == params[1]));
+    const deletedCount = initialLen - data.amo_bus_favorites.length;
+    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+    return [{ affectedRows: deletedCount }];
+  }
+
+  // 26. INSERT INTO amo_bus_favorites (user_id, route_id) VALUES (?, ?)
+  if (normalizedSql.match(/INSERT INTO amo_bus_favorites/i)) {
+    if (!data.amo_bus_favorites) data.amo_bus_favorites = [];
+    const newId = data.amo_bus_favorites.length ? Math.max(...data.amo_bus_favorites.map(f => f.id)) + 1 : 1;
+    const newFav = {
+      id: newId,
+      user_id: Number(params[0]),
+      route_id: Number(params[1]),
+      created_at: new Date().toISOString()
+    };
+    data.amo_bus_favorites.push(newFav);
+    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+    return [{ insertId: newId }];
   }
 
   // Default fallback

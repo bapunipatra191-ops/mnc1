@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth').router;
 const portalRoutes = require('./routes/portal');
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
+const amoBusRoutes = require('./routes/amo_bus');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/portal', portalRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/amo-bus', amoBusRoutes);
 
 // Fallback path to index.html for undefined routes (supporting routing setups if needed)
 app.get('*', (req, res, next) => {

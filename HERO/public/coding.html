@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Sandbox - MNC Prep</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder (Injected by JS api.js) -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      
+      <!-- Top header -->
+      <div class="dashboard-header" style="margin-bottom: 25px;">
+        <div>
+          <h1 style="font-size: 2.2rem; font-weight: 800;">Interactive Coding Sandbox</h1>
+          <p style="color: var(--text-secondary); margin-top: 5px;">Submit solutions in Javascript. Solve challenges and pass standard unit test cases.</p>
+        </div>
+      </div>
+
+      <!-- Coding split pane workspace -->
+      <div class="coding-workspace">
+        
+        <!-- Left: Challenges selector + Problem statement details -->
+        <div class="challenge-pane">
+          <!-- Sidebar list of problems -->
+          <div class="glass-card" style="padding: 15px; max-height: 180px; overflow-y:auto;">
+            <h4 style="margin-bottom: 10px; font-size: 0.95rem; color: var(--text-secondary); text-transform: uppercase;">
+              Challenges list
+            </h4>
+            <div id="challenge-list" style="display:flex; flex-direction:column; gap:6px;">
+              <div style="color: var(--text-secondary);">Loading challenges...</div>
+            </div>
+          </div>
+
+          <!-- Problem statement details pane -->
+          <div id="challenge-details-pane" style="flex: 1; overflow: hidden; min-height: 250px;">
+            <div style="text-align: center; padding: 40px; color: var(--text-secondary);">Loading challenge statement...</div>
+          </div>
+        </div>
+
+        <!-- Right: Code Editor + Run action + Console -->
+        <div class="editor-pane">
+          <!-- Code editor area -->
+          <div class="code-editor-wrapper">
+            <textarea id="code-editor" class="code-textarea" placeholder="// Write your JavaScript function here..."></textarea>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="coding-actions">
+            <button id="run-code-btn" class="btn btn-primary" style="padding: 10px 24px;">
+              <span>⚡</span> Run Tests
+            </button>
+          </div>
+
+          <!-- Interactive console logs -->
+          <div class="console-box">
+            <h4>Console Unit Tests Outcome</h4>
+            <div id="console-output">
+              <div style="color: var(--text-muted);">Run code to inspect test cases outcome.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/coding.js"></script>
+</body>
+</html>

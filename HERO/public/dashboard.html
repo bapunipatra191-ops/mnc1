@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - MNC Prep Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder (Injected by JS api.js) -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      <!-- Dashboard Top Header Greeting -->
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-size: 2.2rem; font-weight: 800;">Welcome Back, <span id="user-greet" class="text-gradient">Scholar</span>!</h1>
+          <p style="color: var(--text-secondary); margin-top: 5px;">Here is your recruitment readiness analysis for today.</p>
+        </div>
+        <div class="timer-widget" style="background-color:rgba(16, 185, 129, 0.15); color:var(--accent-emerald);">
+          <span>📈</span> Readiness: <strong id="overall-readiness">0%</strong>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Counters -->
+      <div class="stats-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-icon">🧮</div>
+          <div class="stat-info">
+            <div id="stat-aptitude-count" class="stat-val">0</div>
+            <div class="stat-lbl">Aptitude Questions</div>
+          </div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-icon">💻</div>
+          <div class="stat-info">
+            <div id="stat-tech-count" class="stat-val">0</div>
+            <div class="stat-lbl">Technical MCQs</div>
+          </div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-info">
+            <div id="stat-coding-count" class="stat-val">0</div>
+            <div class="stat-lbl">Coding Challenges</div>
+          </div>
+        </div>
+        <div class="glass-card stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <div id="stat-mock-count" class="stat-val">0</div>
+            <div class="stat-lbl">Mock Exams Taken</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Columns Grid Layout -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px;">
+        
+        <!-- Progress Rings Card -->
+        <div class="glass-card">
+          <h3 style="font-size: 1.3rem; margin-bottom: 25px;">Module Readiness Breakdown</h3>
+          <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+            
+            <div style="text-align: center; position: relative;">
+              <div id="progress-aptitude" style="position: relative; display: inline-block;"></div>
+              <div style="margin-top: 10px; font-weight: 600; font-size: 0.95rem;">Aptitude</div>
+            </div>
+
+            <div style="text-align: center; position: relative;">
+              <div id="progress-technical" style="position: relative; display: inline-block;"></div>
+              <div style="margin-top: 10px; font-weight: 600; font-size: 0.95rem;">Tech MCQs</div>
+            </div>
+
+            <div style="text-align: center; position: relative;">
+              <div id="progress-coding" style="position: relative; display: inline-block;"></div>
+              <div style="margin-top: 10px; font-weight: 600; font-size: 0.95rem;">Coding Solved</div>
+            </div>
+
+            <div style="text-align: center; position: relative;">
+              <div id="progress-overall" style="position: relative; display: inline-block;"></div>
+              <div style="margin-top: 10px; font-weight: 600; font-size: 0.95rem;">Total Average</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Task Checklist card -->
+        <div class="glass-card">
+          <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Daily Checklist</h3>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 14px;">
+            <li style="display:flex; gap:10px; align-items:center;">
+              <span style="font-size:1.2rem;">✔️</span> 
+              <span style="font-size:0.95rem; color:var(--text-secondary);">Solve <strong>Two Sum</strong> coding challenge</span>
+            </li>
+            <li style="display:flex; gap:10px; align-items:center;">
+              <span style="font-size:1.2rem;">✔️</span> 
+              <span style="font-size:0.95rem; color:var(--text-secondary);">Complete 5 <strong>Java OOPs</strong> MCQs</span>
+            </li>
+            <li style="display:flex; gap:10px; align-items:center;">
+              <span style="font-size:1.2rem;">✔️</span> 
+              <span style="font-size:0.95rem; color:var(--text-secondary);">Submit HR reply (STAR method)</span>
+            </li>
+            <li style="display:flex; gap:10px; align-items:center;">
+              <span style="font-size:1.2rem;">✔️</span> 
+              <span style="font-size:0.95rem; color:var(--text-secondary);">Review <strong>TCS NQT</strong> pattern sheets</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Mock Exams Log Card -->
+      <div class="glass-card" style="margin-bottom: 40px;">
+        <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Mock Exam Submission History</h3>
+        <div id="mock-history-list">
+          <div style="padding: 20px 0; text-align: center; color: var(--text-secondary);">Loading exam history log...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

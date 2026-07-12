@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Sheets - MNC Prep</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder (Injected by JS api.js) -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      
+      <!-- Top header -->
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-size: 2.2rem; font-weight: 800;">Company Prep Sheets</h1>
+          <p style="color: var(--text-secondary); margin-top: 5px;">Find recruitment roadmaps, assessment patterns, and focus guides of elite MNCs.</p>
+        </div>
+      </div>
+
+      <!-- Company selection tabs -->
+      <div class="admin-tabs" style="border-color: var(--border-color); margin-bottom: 25px;">
+        <button class="admin-tab-btn company-tab-btn active" data-company="tcs">TCS NQT</button>
+        <button class="admin-tab-btn company-tab-btn" data-company="infosys">Infosys SP/DSE</button>
+        <button class="admin-tab-btn company-tab-btn" data-company="wipro">Wipro Elite</button>
+        <button class="admin-tab-btn company-tab-btn" data-company="amazon">Amazon SDE</button>
+        <button class="admin-tab-btn company-tab-btn" data-company="google">Google SWE</button>
+      </div>
+
+      <!-- Information panel details -->
+      <div id="company-guide-panel" style="max-width: 800px; margin: 0 auto;">
+        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">Loading company sheets...</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/prep.js"></script>
+</body>
+</html>

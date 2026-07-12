@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aptitude Practice - MNC Prep</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder (Injected by JS api.js) -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      
+      <!-- Aptitude practice header -->
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-size: 2.2rem; font-weight: 800;">Aptitude Practice Hub</h1>
+          <p style="color: var(--text-secondary); margin-top: 5px;">Build numerical speed, analytical thinking and grammar skills.</p>
+        </div>
+        
+        <!-- Filter dropdown -->
+        <div>
+          <select id="subject-selector" style="font-weight: 600; cursor: pointer;">
+            <option value="quantitative">Quantitative Aptitude</option>
+            <option value="logical">Logical Reasoning</option>
+            <option value="verbal">Verbal & English Ability</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- MCQ Container -->
+      <div class="quiz-container">
+        <div id="question-area">
+          <div style="text-align: center; padding: 40px; color: var(--text-secondary);">Loading questions...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/prep.js"></script>
+</body>
+</html>

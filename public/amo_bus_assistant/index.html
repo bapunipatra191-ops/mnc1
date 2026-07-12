@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMO Bus Assistant – Your Smart Travel Companion</title>
+  <meta name="description" content="Your Smart Travel Companion, Anytime, Anywhere. Real-time bus info, routes, schedules, fares, alerts and more.">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+  <div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">🚌</span>
+          <span class="logo-text">AMO Bus</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#map" class="nav-item" data-tab="map">
+          <span class="nav-icon">🗺️</span>
+          <span class="nav-label">Live Map</span>
+        </a>
+        <a href="#schedules" class="nav-item" data-tab="schedules">
+          <span class="nav-icon">📅</span>
+          <span class="nav-label">Schedules</span>
+        </a>
+        <a href="#fare" class="nav-item" data-tab="fare">
+          <span class="nav-icon">🎫</span>
+          <span class="nav-label">Fare Calculator</span>
+        </a>
+        <a href="#feedback" class="nav-item" data-tab="feedback">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Alerts & Feedback</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <p class="tagline">Your Smart Companion</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-layout">
+      <!-- Top Header Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <h1 id="page-title">Dashboard</h1>
+        </div>
+        <div class="topbar-right">
+          <div id="live-clock" class="live-clock">--:--:--</div>
+          <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
+          <div id="auth-status" class="auth-status">
+            <button id="btn-login-trigger" class="btn btn-primary btn-sm">Sign In</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scroll Progress Bar -->
+      <div class="progress-container">
+        <div id="scroll-progress" class="progress-bar"></div>
+      </div>
+
+      <!-- Tab Content Area -->
+      <main class="content-body">
+        
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-pane active">
+          <!-- Hero Section -->
+          <div class="hero-card glass">
+            <div class="hero-content">
+              <h2 class="typing-container">Your Smart Travel Companion</h2>
+              <p>Explore real‑time bus scheduling, route tracks, pricing details, and quick alerts right at your fingertips.</p>
+              <div class="hero-actions">
+                <button class="btn btn-accent" onclick="switchTab('map')">Track Live Bus</button>
+                <button class="btn btn-outline" onclick="switchTab('schedules')">View Schedules</button>
+              </div>
+            </div>
+            <div class="hero-illustration">
+              <img src="assets/bus.png" alt="Moving bus illustration" class="bus-animation" />
+            </div>
+          </div>
+
+          <!-- Quick Actions & Stats -->
+          <div class="stats-grid">
+            <div class="stat-card glass">
+              <div class="stat-header">
+                <span class="stat-icon">🚦</span>
+                <span class="stat-title">Active Routes</span>
+              </div>
+              <div class="stat-value" id="stat-routes-count">0</div>
+              <p class="stat-desc">Maintained in system</p>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-header">
+                <span class="stat-icon">🚨</span>
+                <span class="stat-title">Service Alerts</span>
+              </div>
+              <div class="stat-value text-warning" id="stat-alerts-count">0</div>
+              <p class="stat-desc">Active delay warnings</p>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-header">
+                <span class="stat-icon">📌</span>
+                <span class="stat-title">Nearby Stops</span>
+              </div>
+              <div class="stat-value" id="stat-stops-count">4</div>
+              <p class="stat-desc">Within walking range</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Search Widget -->
+            <div class="panel glass">
+              <h3>Search Bus / Route</h3>
+              <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search by route number, stop, or bus name..." />
+                <span class="search-icon">🔍</span>
+              </div>
+              <ul id="search-results" class="search-results"></ul>
+            </div>
+
+            <!-- Favorites Widget -->
+            <div class="panel glass">
+              <h3>My Favorite Routes</h3>
+              <div id="favorites-container" class="favorites-container">
+                <div class="empty-state">
+                  <p>No favorites saved yet. Add routes to favorites to see them here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: LIVE MAP -->
+        <section id="tab-map" class="tab-pane">
+          <div class="map-layout">
+            <div class="map-controls glass">
+              <h3>Live Tracker Settings</h3>
+              <div class="form-group">
+                <label for="map-route-selector">Select Route to Track:</label>
+                <select id="map-route-selector" class="form-control">
+                  <option value="">-- Choose an active route --</option>
+                </select>
+              </div>
+              <div id="tracker-route-detail" class="tracker-route-detail hide">
+                <div class="detail-label">Current Route:</div>
+                <div class="detail-value" id="track-route-name">AMO Express (101)</div>
+                <div class="detail-label">Next Stop:</div>
+                <div class="detail-value text-accent" id="track-route-next-stop">Uptown</div>
+                <div class="detail-label">Speed:</div>
+                <div class="detail-value" id="track-route-speed">45 km/h</div>
+              </div>
+            </div>
+            <div class="map-container-wrapper">
+              <div id="live-map" class="live-map glass">
+                <canvas id="map-canvas" width="600" height="400"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: SCHEDULES & ROUTES -->
+        <section id="tab-schedules" class="tab-pane">
+          <div class="schedules-layout">
+            <div class="routes-list-panel glass">
+              <h3>Available Bus Routes</h3>
+              <div id="routes-container" class="routes-container"></div>
+            </div>
+            <div class="route-details-panel glass">
+              <h3>Route Detail Info</h3>
+              <div id="route-detail-view">
+                <div class="empty-state">
+                  <p>Select a route from the list to view its timing list and stop progression.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: FARE CALCULATOR -->
+        <section id="tab-fare" class="tab-pane">
+          <div class="fare-layout">
+            <div class="fare-calc-panel glass">
+              <h3>Fare Estimator</h3>
+              <form id="fare-form">
+                <div class="form-group">
+                  <label for="fare-route">Select Route:</label>
+                  <select id="fare-route" class="form-control" required>
+                    <option value="">-- Select Route --</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="fare-origin">Origin Stop:</label>
+                    <select id="fare-origin" class="form-control" required disabled>
+                      <option value="">-- Select Origin --</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="fare-dest">Destination Stop:</label>
+                    <select id="fare-dest" class="form-control" required disabled>
+                      <option value="">-- Select Destination --</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-accent btn-block">Calculate Fare</button>
+              </form>
+
+              <div id="fare-result" class="fare-result hide glass">
+                <h4>Calculation Summary</h4>
+                <div class="fare-result-row">
+                  <span>Distance Index:</span>
+                  <strong id="result-distance">--</strong>
+                </div>
+                <div class="fare-result-row">
+                  <span>Standard Adult Fare:</span>
+                  <strong class="text-accent" id="result-adult-fare">--</strong>
+                </div>
+                <div class="fare-result-row">
+                  <span>Student Discount Fare:</span>
+                  <strong class="text-accent" id="result-student-fare">--</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nearby Stops Widget -->
+            <div class="nearby-panel glass">
+              <h3>Stops Near Your Location</h3>
+              <div id="nearby-container" class="nearby-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 5: ALERTS & FEEDBACK -->
+        <section id="tab-feedback" class="tab-pane">
+          <div class="feedback-layout">
+            <div class="alerts-panel glass">
+              <h3>Active Service Alerts</h3>
+              <ul id="alerts-list" class="alerts-list">
+                <li class="empty-state">No alerts active at this moment.</li>
+              </ul>
+            </div>
+
+            <div class="feedback-panel glass">
+              <h3>Submit Customer Feedback</h3>
+              <form id="feedback-form" class="feedback-form">
+                <div class="form-group">
+                  <label for="feedback-name">Your Name:</label>
+                  <input type="text" id="feedback-name" name="name" class="form-control" placeholder="John Doe" required />
+                </div>
+                <div class="form-group">
+                  <label for="feedback-email">Your Email Address:</label>
+                  <input type="email" id="feedback-email" name="email" class="form-control" placeholder="john@example.com" required />
+                </div>
+                <div class="form-group">
+                  <label for="feedback-message">Message/Feedback:</label>
+                  <textarea id="feedback-message" name="message" class="form-control" placeholder="Share your experience or submit a service bug..." rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer class="footer">
+        <p>© 2026 AMO Bus Assistant. All rights reserved. Created with Antigravity UI.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION MODAL -->
+  <div id="auth-modal" class="modal">
+    <div class="modal-content glass">
+      <span class="close-modal">&times;</span>
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" data-mode="login">Login</button>
+        <button class="auth-tab-btn" data-mode="register">Register</button>
+      </div>
+      
+      <!-- Login Form -->
+      <form id="form-login" class="auth-form-body">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" required placeholder="john@student.com" />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-accent btn-block">Sign In</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" class="auth-form-body hide">
+        <div class="form-group">
+          <label for="reg-username">Username</label>
+          <input type="text" id="reg-username" class="form-control" required placeholder="john_doe" />
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-control" required placeholder="john@student.com" />
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" class="form-control" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-accent btn-block">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-nav">
+    <a href="#dashboard" class="mobile-nav-item active" data-tab="dashboard">
+      <span class="mobile-nav-icon">🏠</span>
+      <span class="mobile-nav-label">Home</span>
+    </a>
+    <a href="#map" class="mobile-nav-item" data-tab="map">
+      <span class="mobile-nav-icon">🗺️</span>
+      <span class="mobile-nav-label">Map</span>
+    </a>
+    <a href="#schedules" class="mobile-nav-item" data-tab="schedules">
+      <span class="mobile-nav-icon">📅</span>
+      <span class="mobile-nav-label">Schedule</span>
+    </a>
+    <a href="#fare" class="mobile-nav-item" data-tab="fare">
+      <span class="mobile-nav-icon">🎫</span>
+      <span class="mobile-nav-label">Fare</span>
+    </a>
+    <a href="#feedback" class="mobile-nav-item" data-tab="feedback">
+      <span class="mobile-nav-icon">💬</span>
+      <span class="mobile-nav-label">Alerts</span>
+    </a>
+  </nav>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

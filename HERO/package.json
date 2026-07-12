@@ -1,0 +1,20 @@
+{
+  "name": "mnc-prep-portal",
+  "version": "1.0.0",
+  "description": "An all-in-one preparation portal for MNC interviews, featuring aptitude tests, coding sandbox, technical MCQs, HR prep, mock tests, and progress tracking.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.7"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - MNC Prep</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation placeholder -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+      
+      <!-- Top header -->
+      <div class="dashboard-header">
+        <div>
+          <h1 style="font-size: 2.2rem; font-weight: 800;">Administration Panel</h1>
+          <p style="color: var(--text-secondary); margin-top: 5px;">Manage materials, review registrations, and audit system metrics.</p>
+        </div>
+      </div>
+
+      <!-- Navigation tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-view="stats">Portal stats & Users</button>
+        <button class="admin-tab-btn" data-view="mcq">Add/Manage MCQs</button>
+        <button class="admin-tab-btn" data-view="coding">Add/Manage Coding</button>
+      </div>
+
+      <!-- VIEW 1: Overview stats and user lists -->
+      <div id="admin-view-stats">
+        <div class="stats-grid">
+          <div class="glass-card stat-card">
+            <div class="stat-icon">🎓</div>
+            <div class="stat-info">
+              <div id="admin-stat-students" class="stat-val">0</div>
+              <div class="stat-lbl">Registered Students</div>
+            </div>
+          </div>
+          <div class="glass-card stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-info">
+              <div id="admin-stat-mcqs" class="stat-val">0</div>
+              <div class="stat-lbl">Total MCQs Seeded</div>
+            </div>
+          </div>
+          <div class="glass-card stat-card">
+            <div class="stat-icon">✍️</div>
+            <div class="stat-info">
+              <div id="admin-stat-coding" class="stat-val">0</div>
+              <div class="stat-lbl">Coding Challenges</div>
+            </div>
+          </div>
+          <div class="glass-card stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-info">
+              <div id="admin-stat-taken" class="stat-val">0</div>
+              <div class="stat-lbl">Mock Exams Completed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="font-size: 1.25rem; margin-bottom: 20px;">Registered Scholar Records</h3>
+          <div class="table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined Date</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-tbody">
+                <tr>
+                  <td colspan="5" style="text-align: center;">Loading student accounts...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: MCQ Management -->
+      <div id="admin-view-mcq" style="display: none;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: flex-start;">
+          
+          <!-- Add MCQ form -->
+          <div class="glass-card">
+            <h3 style="font-size:1.2rem; margin-bottom: 20px;">Create New MCQ Question</h3>
+            <form id="admin-add-mcq-form" style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                  <label for="mcq-category">Category</label>
+                  <select id="mcq-category" required>
+                    <option value="aptitude">Aptitude</option>
+                    <option value="technical">Technical</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="mcq-subject">Subject Tag</label>
+                  <select id="mcq-subject" required>
+                    <option value="quantitative">Quantitative (Aptitude)</option>
+                    <option value="logical">Logical Reasoning (Aptitude)</option>
+                    <option value="verbal">Verbal/English (Aptitude)</option>
+                    <option value="java">Java Programming</option>
+                    <option value="cpp">C++ Programming</option>
+                    <option value="python">Python Programming</option>
+                    <option value="webdev">HTML/CSS/Web Dev</option>
+                    <option value="os">Operating Systems</option>
+                    <option value="dbms">DBMS & SQL</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="mcq-question">Question Statement</label>
+                <textarea id="mcq-question" rows="3" required placeholder="Type question description..."></textarea>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                  <label for="mcq-opt-a">Option A</label>
+                  <input type="text" id="mcq-opt-a" required placeholder="Option A text">
+                </div>
+                <div class="form-group">
+                  <label for="mcq-opt-b">Option B</label>
+                  <input type="text" id="mcq-opt-b" required placeholder="Option B text">
+                </div>
+                <div class="form-group">
+                  <label for="mcq-opt-c">Option C</label>
+                  <input type="text" id="mcq-opt-c" required placeholder="Option C text">
+                </div>
+                <div class="form-group">
+                  <label for="mcq-opt-d">Option D</label>
+                  <input type="text" id="mcq-opt-d" required placeholder="Option D text">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="mcq-correct">Correct Option</label>
+                <select id="mcq-correct" required>
+                  <option value="A">Option A</option>
+                  <option value="B">Option B</option>
+                  <option value="C">Option C</option>
+                  <option value="D">Option D</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="mcq-explanation">Explanation / Solution Steps</label>
+                <textarea id="mcq-explanation" rows="3" placeholder="Provide mathematical derivation or coding guidelines explanation..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-4">Save Question</button>
+            </form>
+          </div>
+
+          <!-- Manage MCQs list -->
+          <div class="glass-card">
+            <h3 style="font-size:1.2rem; margin-bottom: 20px;">Manage Seeded MCQs</h3>
+            <div class="table-wrapper" style="max-height: 550px; overflow-y:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Cat</th>
+                    <th>Subj</th>
+                    <th>Question</th>
+                    <th>Ans</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-manage-mcq-tbody">
+                  <!-- Injected by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- VIEW 3: Coding Challenges Management -->
+      <div id="admin-view-coding" style="display: none;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: flex-start;">
+          
+          <!-- Add Challenge Form -->
+          <div class="glass-card">
+            <h3 style="font-size:1.2rem; margin-bottom: 20px;">Create Coding Challenge</h3>
+            <form id="admin-add-coding-form" style="display:flex; flex-direction:column; gap:16px;">
+              
+              <div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px;">
+                <div class="form-group">
+                  <label for="coding-title">Problem Title</label>
+                  <input type="text" id="coding-title" required placeholder="e.g. FizzBuzz">
+                </div>
+                <div class="form-group">
+                  <label for="coding-difficulty">Difficulty</label>
+                  <select id="coding-difficulty" required>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="coding-desc">Problem Statement Description</label>
+                <textarea id="coding-desc" rows="4" required placeholder="Describe task, parameters and return values..."></textarea>
+              </div>
+
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                  <label for="coding-input-fmt">Input Format</label>
+                  <input type="text" id="coding-input-fmt" placeholder="e.g. Single line integer">
+                </div>
+                <div class="form-group">
+                  <label for="coding-output-fmt">Output Format</label>
+                  <input type="text" id="coding-output-fmt" placeholder="e.g. Array elements">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="coding-constraints">Constraints</label>
+                <input type="text" id="coding-constraints" placeholder="e.g. 1 <= N <= 10^5">
+              </div>
+
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                  <label for="coding-sample-in">Sample Input</label>
+                  <textarea id="coding-sample-in" rows="2" placeholder="Sample input text"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="coding-sample-out">Sample Output</label>
+                  <textarea id="coding-sample-out" rows="2" placeholder="Sample output text"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="coding-tests">Verification Unit Test Cases (JSON format)</label>
+                <textarea id="coding-tests" rows="3" required placeholder='[{"input": "sample_in_1", "output": "sample_out_1"}, {"input": "in_2", "output": "out_2"}]'></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-4">Save Coding Challenge</button>
+            </form>
+          </div>
+
+          <!-- Manage challenges list -->
+          <div class="glass-card">
+            <h3 style="font-size:1.2rem; margin-bottom: 20px;">Manage Seeded Challenges</h3>
+            <div class="table-wrapper" style="max-height: 550px; overflow-y:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Diff</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-manage-coding-tbody">
+                  <!-- Injected by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

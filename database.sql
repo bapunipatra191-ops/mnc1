@@ -112,3 +112,62 @@ INSERT INTO `hr_questions` (`question`, `tips`, `sample_answer`) VALUES
 -- Seed Mock Test (JSON representing a pre-packaged test with question schemas)
 INSERT INTO `mock_tests` (`id`, `title`, `duration_minutes`, `questions`) VALUES
 (1, 'TCS NQT Full Length Mock Test', 30, '[{"id":1,"type":"aptitude","subject":"quantitative"},{"id":3,"type":"aptitude","subject":"logical"},{"id":5,"type":"aptitude","subject":"verbal"},{"id":1,"type":"technical","subject":"java"},{"id":3,"type":"technical","subject":"cpp"},{"id":6,"type":"technical","subject":"os"},{"id":1,"type":"coding"}]');
+
+-- ==========================================
+-- AMO BUS ASSISTANT SCHEMAS
+-- ==========================================
+
+-- AMO Bus Routes Table
+CREATE TABLE IF NOT EXISTS `amo_bus_routes` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `number` VARCHAR(20) NOT NULL,
+  `source` VARCHAR(100) NOT NULL,
+  `destination` VARCHAR(100) NOT NULL,
+  `stops` TEXT NOT NULL, -- comma-separated list of stops
+  `timings` TEXT NOT NULL, -- comma-separated list of timings
+  `fare_adult` DECIMAL(5,2) DEFAULT 0.00,
+  `fare_student` DECIMAL(5,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- AMO Bus Service Alerts Table
+CREATE TABLE IF NOT EXISTS `amo_bus_alerts` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `route_id` INT DEFAULT NULL,
+  `message` VARCHAR(255) NOT NULL,
+  `severity` VARCHAR(20) DEFAULT 'warning', -- 'info', 'warning', 'critical'
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`route_id`) REFERENCES `amo_bus_routes`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- AMO Bus Feedback Table
+CREATE TABLE IF NOT EXISTS `amo_bus_feedback` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- AMO Bus User Favorites Table
+CREATE TABLE IF NOT EXISTS `amo_bus_favorites` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `route_id` INT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `user_route_unique` (`user_id`, `route_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`route_id`) REFERENCES `amo_bus_routes`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Seed AMO Bus Routes
+INSERT INTO `amo_bus_routes` (`id`, `name`, `number`, `source`, `destination`, `stops`, `timings`, `fare_adult`, `fare_student`) VALUES
+(1, 'AMO Express', '101', 'Central Station', 'North Terminal', 'Central Station,Midtown,Uptown,North Terminal', '06:00,07:30,09:00,10:30,12:00', 2.50, 1.50),
+(2, 'AMO Local', '202', 'East Park', 'West Market', 'East Park,City Hall,West Market', '06:15,07:45,09:15,10:45,12:15', 1.80, 1.00),
+(3, 'Metro Connector', '303', 'Airport T1', 'Downtown Hub', 'Airport T1,Business Park,Tech Park,Downtown Hub', '05:00,06:00,07:00,08:00,09:00,10:00', 3.50, 2.00);
+
+-- Seed AMO Bus Service Alerts
+INSERT INTO `amo_bus_alerts` (`id`, `route_id`, `message`, `severity`) VALUES
+(1, 2, 'Delay due to traffic on Main St', 'warning'),
+(2, NULL, 'System-wide maintenance scheduled on Sunday 2:00 AM to 4:00 AM', 'info');
+
