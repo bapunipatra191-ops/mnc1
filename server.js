@@ -12,8 +12,15 @@ const amoBusRoutes = require('./routes/amo_bus');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS for frontend API calls
-app.use(cors());
+// Enable CORS — allow requests from Vercel frontend and localhost
+app.use(cors({
+  origin: [
+    'https://mnc1-tau.vercel.app',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+  ],
+  credentials: true
+}));
 
 // Parse incoming request JSON bodies
 app.use(express.json());

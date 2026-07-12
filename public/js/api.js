@@ -2,7 +2,9 @@
 // API Utility & Common Shell Initializer
 // ==========================================================================
 
-const API_BASE = '/api';
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? '/api'
+  : 'https://mnc1-fbck.onrender.com/api';
 
 // Toast Notification Manager
 const showToast = (message, type = 'info') => {
