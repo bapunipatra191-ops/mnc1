@@ -117,6 +117,16 @@ function executeJsonQuery(sql, params = []) {
   const data = memDb;
   const normalizedSql = sql.trim().replace(/\s+/g, ' ');
 
+  // 0. SELECT * FROM users  (admin - all users, no WHERE clause)
+  if (normalizedSql.match(/^SELECT \* FROM users$/i)) {
+    return [data.users];
+  }
+
+  // 0b. SELECT * FROM user_progress  (admin - all progress records)
+  if (normalizedSql.match(/^SELECT \* FROM user_progress$/i)) {
+    return [data.user_progress];
+  }
+
   // 1. SELECT * FROM users WHERE email = ? OR username = ?
   if (normalizedSql.match(/SELECT \* FROM users WHERE email = \? OR username = \?/i)) {
     const matched = data.users.filter(u => u.email === params[0] || u.username === params[1]);
@@ -187,16 +197,6 @@ function executeJsonQuery(sql, params = []) {
   // 11. SELECT * FROM hr_questions
   if (normalizedSql.match(/SELECT \* FROM hr_questions$/i)) {
     return [data.hr_questions];
-  }
-
-  // 11b. SELECT * FROM users (no WHERE - used by admin stats)
-  if (normalizedSql.match(/SELECT \* FROM users$/i)) {
-    return [data.users];
-  }
-
-  // 11c. SELECT * FROM user_progress (no WHERE - used by admin stats)
-  if (normalizedSql.match(/SELECT \* FROM user_progress$/i)) {
-    return [data.user_progress];
   }
 
   // 12. SELECT * FROM mock_tests WHERE id = ?
