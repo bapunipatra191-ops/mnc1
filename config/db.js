@@ -1,9 +1,8 @@
-const fs = require('fs');
-const path = require('path');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const FALLBACK_DB_PATH = path.join(__dirname, 'fallback_db.json');
+// In-memory fallback database (used when MySQL is unavailable)
+// Works on all platforms including read-only cloud filesystems (Railway, Render, Heroku)
 
 // Default initial seed data matching database.sql
 const DEFAULT_SEED_DATA = {
@@ -108,28 +107,14 @@ const DEFAULT_SEED_DATA = {
   amo_bus_favorites: []
 };
 
-// Ensure fallback db file exists
-if (!fs.existsSync(FALLBACK_DB_PATH)) {
-  fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(DEFAULT_SEED_DATA, null, 2), 'utf8');
-} else {
-  try {
-    const data = JSON.parse(fs.readFileSync(FALLBACK_DB_PATH, 'utf8'));
-    let modified = false;
-    if (!data.amo_bus_routes) { data.amo_bus_routes = DEFAULT_SEED_DATA.amo_bus_routes; modified = true; }
-    if (!data.amo_bus_alerts) { data.amo_bus_alerts = DEFAULT_SEED_DATA.amo_bus_alerts; modified = true; }
-    if (!data.amo_bus_feedback) { data.amo_bus_feedback = []; modified = true; }
-    if (!data.amo_bus_favorites) { data.amo_bus_favorites = []; modified = true; }
-    if (modified) {
-      fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
-    }
-  } catch (e) {
-    console.error('Error seeding AMO Bus fallback tables:', e);
-  }
-}
+// Deep-clone seed data into the live in-memory store
+// This runs once at startup — no file I/O needed
+const memDb = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+console.log('[FallbackDB] In-memory database initialised with seed data.');
 
-// SQL Query simulation for fallback database
+// SQL Query simulation using in-memory store
 function executeJsonQuery(sql, params = []) {
-  const data = JSON.parse(fs.readFileSync(FALLBACK_DB_PATH, 'utf8'));
+  const data = memDb;
   const normalizedSql = sql.trim().replace(/\s+/g, ' ');
 
   // 1. SELECT * FROM users WHERE email = ? OR username = ?
@@ -168,7 +153,6 @@ function executeJsonQuery(sql, params = []) {
       created_at: new Date().toISOString()
     };
     data.users.push(newUser);
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ insertId: newId }];
   }
 
@@ -235,7 +219,6 @@ function executeJsonQuery(sql, params = []) {
       completed_at: new Date().toISOString()
     };
     data.user_progress.push(newProg);
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ insertId: newId }];
   }
 
@@ -255,7 +238,6 @@ function executeJsonQuery(sql, params = []) {
       explanation: params[8] || ''
     };
     data.mcq_questions.push(newMcq);
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ insertId: newId }];
   }
 
@@ -264,7 +246,6 @@ function executeJsonQuery(sql, params = []) {
     const initialLen = data.mcq_questions.length;
     data.mcq_questions = data.mcq_questions.filter(q => q.id != params[0]);
     const deletedCount = initialLen - data.mcq_questions.length;
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ affectedRows: deletedCount }];
   }
 
@@ -284,7 +265,6 @@ function executeJsonQuery(sql, params = []) {
       test_cases: params[8]
     };
     data.coding_challenges.push(newChallenge);
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ insertId: newId }];
   }
 
@@ -293,7 +273,6 @@ function executeJsonQuery(sql, params = []) {
     const initialLen = data.coding_challenges.length;
     data.coding_challenges = data.coding_challenges.filter(c => c.id != params[0]);
     const deletedCount = initialLen - data.coding_challenges.length;
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ affectedRows: deletedCount }];
   }
 
@@ -329,7 +308,6 @@ function executeJsonQuery(sql, params = []) {
       created_at: new Date().toISOString()
     };
     data.amo_bus_feedback.push(newFeed);
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ insertId: newId }];
   }
 
@@ -355,7 +333,6 @@ function executeJsonQuery(sql, params = []) {
     const initialLen = data.amo_bus_favorites.length;
     data.amo_bus_favorites = data.amo_bus_favorites.filter(f => !(f.user_id == params[0] && f.route_id == params[1]));
     const deletedCount = initialLen - data.amo_bus_favorites.length;
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ affectedRows: deletedCount }];
   }
 
@@ -370,7 +347,6 @@ function executeJsonQuery(sql, params = []) {
       created_at: new Date().toISOString()
     };
     data.amo_bus_favorites.push(newFav);
-    fs.writeFileSync(FALLBACK_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
     return [{ insertId: newId }];
   }
 
